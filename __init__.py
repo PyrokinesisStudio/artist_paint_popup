@@ -48,7 +48,7 @@ def get_addon_preferences():
     # addon_prefs = get_addon_preferences()
     # addon_prefs.url_smsservice
     user_preferences = bpy.context.user_preferences
-    addon_preferences = user_preferences.addons['artist_paint_panel'].preferences
+    addon_preferences = user_preferences.addons['paint_artist_panel'].preferences
     return addon_preferences
 
 def pollAPT(self, context):
