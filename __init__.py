@@ -23,7 +23,7 @@
 
 bl_info = {"name": "Artist Paint Popup",
             "author": "CDMJ, Spirou4D",
-            "version": (1, 0),
+            "version": (1, 58),
             "blender": (2, 77, 0),
             "location": "",
             "description": "shortcut menu for Artist Panel addon",
