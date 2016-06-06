@@ -23,7 +23,7 @@
 
 bl_info = {"name": "Artist Paint Popup",
             "author": "CDMJ, Spirou4D",
-            "version": (1, 59, 0),
+            "version": (1, 0),
             "blender": (2, 77, 0),
             "location": "",
             "description": "shortcut menu for Artist Panel addon",
@@ -49,7 +49,7 @@ def get_addon_prefs_corr():
             key = Addons.find('artist_paint_panel')
             break
         elif Addons.find('artist_paint_panel-master') != -1:
-            key = Addons.find('artist_paint_panel')
+            key = Addons.find('artist_paint_panel-master')
             break
         else:
             return -1
@@ -89,8 +89,7 @@ class canvasPopup(Operator):
         return True
 
     def invoke(self, context, event):
-        return context.window_manager.invoke_props_dialog(self,
-                                                        width=240)
+        return context.window_manager.invoke_props_dialog(self, width=240)
 
     def execute(self, context):
         return {'FINISHED'}
@@ -99,13 +98,15 @@ class canvasPopup(Operator):
         #"ARTIST_PAINT_OT_popup"
         addon_prefs = get_addon_prefs_corr()
         if addon_prefs == -1:
+            print("You must install the 'Artist Paint Panel' Add-On, please")
             return {'FINISHED'}
-        buttName_1 = str(addon_prefs.customAngle) +"°"
-        buttName_2 = str(addon_prefs.customAngle) +"°"
 
-        CustomAngle  = str(addon_prefs.customAngle)
+        CustomAngle  = str(addon_prefs['customAngle'])
         tool_settings = context.tool_settings
         ipaint = context.tool_settings.image_paint
+
+        buttName_1 = CustomAngle +"°"
+        buttName_2 = CustomAngle +"°"
 
         layout = self.layout
         layout.active = context.scene.UI_is_activated
