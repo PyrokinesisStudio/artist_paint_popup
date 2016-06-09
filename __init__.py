@@ -101,7 +101,8 @@ class canvasPopup(Operator):
             print("You must install the 'Artist Paint Panel' Add-On, please")
             return {'FINISHED'}
 
-        CustomAngle  = str(addon_prefs['customAngle'])
+        try: CustomAngle = str(addon_prefs['customAngle'])
+        except: CustomAngle = '15.0'
         tool_settings = context.tool_settings
         ipaint = context.tool_settings.image_paint
 
