@@ -23,10 +23,10 @@
 
 bl_info = {"name": "Artist Paint Popup",
             "author": "CDMJ, Spirou4D",
-            "version": (1, 0),
+            "version": (1, 1),
             "blender": (2, 77, 0),
             "location": "",
-            "description": "shortcut menu for Artist Panel addon",
+            "description": "shortcut menu for Artist Panel addon Plus”",
             "warning": "",
             "wiki_url": "",
             "category": "Paint"}
@@ -210,6 +210,37 @@ class canvasPopup(Operator):
         col.operator("artist_paint.canvas_resetrot",
                     text = "Reset Rotation", icon = 'CANCEL')
 
+#nested pie
+class OperNested(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "object.oper_nested"
+    bl_label = "Operator Nested"
+
+    @classmethod
+    def poll(cls, context):
+        return context.active_object is not None
+
+    def execute(self, context):
+        bpy.ops.wm.call_menu_pie(name="VIEW3D_PIE_drawtypes")
+        return {'FINISHED'}
+
+
+#------------------------------------#pie for paint2d
+class VIEW3D_PIE_artistpaint(Menu):
+    # label is displayed at the center of the pie menu.
+    bl_label = "PAINTER"
+
+    def draw(self, context):
+        layout = self.layout
+        
+        pie = layout.menu_pie()
+        #pie.operator("render.render", text='one')
+
+        pie.operator("slots.projectpaint", text='Slots', icon='COLLAPSEMENU')
+        pie.operator("paint.brush_popup", text='Paint Brush', icon='BRUSH_DATA')
+        pie.operator("artist_paint.popup", text='Canvas Control', icon='TEXTURE')
+        pie.operator("object.oper_nested", text='Drawtype', icon='CANCEL')
+
 
 
 def register():
@@ -219,18 +250,22 @@ def register():
     for i in km_list:
         sm = bpy.context.window_manager
         km = sm.keyconfigs.default.keymaps[i]
-        kmi = km.keymap_items.new('artist_paint.popup', 'W', 'PRESS', alt=True)
+        kmi = km.keymap_items.new('wm.call_menu_pie', 'W', 'PRESS', alt=True)
+        kmi.properties.name = "VIEW3D_PIE_artistpaint"
+        
+        
 
 def unregister():
     bpy.utils.unregister_module(__name__)
-
+    
     km_list = ['3D View']
     for i in km_list:
         sm = bpy.context.window_manager
         km = sm.keyconfigs.default.keymaps[i]
         for kmi in (kmi for kmi in km.keymap_items \
-                            if (kmi.idname == "artist_paint.popup")):
+                            if (kmi.idname == "VIEW3D_PIE_artistpaint")):
             km.keymap_items.remove(kmi)
+
 
 
 if __name__ == "__main__":
