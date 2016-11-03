@@ -250,7 +250,7 @@ def register():
     for i in km_list:
         sm = bpy.context.window_manager
         km = sm.keyconfigs.default.keymaps[i]
-        kmi = km.keymap_items.new('wm.call_menu_pie', 'W', 'PRESS', alt=True)
+        kmi = km.keymap_items.new('wm.call_menu_pie', 'W', 'PRESS',)# alt=True)
         kmi.properties.name = "VIEW3D_PIE_artistpaint"
         
         
