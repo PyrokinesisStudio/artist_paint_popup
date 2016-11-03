@@ -237,7 +237,7 @@ class VIEW3D_PIE_artistpaint(Menu):
         #pie.operator("render.render", text='one')
 
         pie.operator("slots.projectpaint", text='Slots', icon='COLLAPSEMENU')
-        pie.operator("paint.brush_popup", text='Paint Brush', icon='BRUSH_DATA')
+        pie.operator("view3d.brush_popup", text='Paint Brush', icon='BRUSH_DATA')
         pie.operator("artist_paint.popup", text='Canvas Control', icon='TEXTURE')
         pie.operator("object.oper_nested", text='Drawtype', icon='CANCEL')
 
