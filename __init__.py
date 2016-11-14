@@ -46,10 +46,10 @@ def get_addon_prefs_corr():
     Addons = bpy.context.user_preferences.addons
     for i in Addons:
         if Addons.find('artist_paint_panel') != -1:
-            key = Addons.find('artist_paint_panel')
+            key = 'artist_paint_panel'
             break
         elif Addons.find('artist_paint_panel-master') != -1:
-            key = Addons.find('artist_paint_panel-master')
+            key = 'artist_paint_panel-master'
             break
         else:
             return -1
@@ -101,10 +101,12 @@ class canvasPopup(Operator):
             print("You must install the 'Artist Paint Panel' Add-On, please")
             return {'FINISHED'}
 
-        CustomAngle  = str(addon_prefs['customAngle'])
+        scene =context.scene
+        CustomAngle  = str(addon_prefs.customAngle)
         toolsettings = context.tool_settings
         ipaint = toolsettings.image_paint
 
+        mask_V_align = scene.mask_V_align
         buttName_1 = CustomAngle +"°"
         buttName_2 = CustomAngle +"°"
 
@@ -115,10 +117,12 @@ class canvasPopup(Operator):
         row1 = row.split(align=True)
         row1.label("Shading")
         row2 = row.split(align=True)
-        row2.operator("artist_paint.multitexture",
-                    text='', icon="RENDERLAYERS")
-        row2.operator("artist_paint.glsl",
+        if scene.game_settings.material_mode == 'GLSL':
+            row2.operator("artist_paint.multitexture",
                     text='', icon="RADIO")
+        else:
+            row2.operator("artist_paint.glsl",
+                    text='', icon="RENDERLAYERS")
         row2.scale_x = 1.00
 
         box = layout.box()
@@ -145,7 +149,7 @@ class canvasPopup(Operator):
         col.separator()                             #empty line
 
         col.prop(ipaint, "use_stencil_layer",
-                                text="Use stencil mask")
+                                text="Stencil mask")
         if ipaint.use_stencil_layer == True:
             cel = col.column(align = True)
             cel.template_ID(ipaint, "stencil_image")
@@ -157,7 +161,7 @@ class canvasPopup(Operator):
                         text="Invert the mask",
                         icon='IMAGE_ALPHA')
 
-        col.separator()                             #empty line
+
 
         box = layout.box()                        #CANVAS FRAME CONSTRAINT
         col = box.column(align = True)
@@ -232,10 +236,8 @@ class VIEW3D_PIE_artistpaint(Menu):
 
     def draw(self, context):
         layout = self.layout
-        
-        pie = layout.menu_pie()
-        #pie.operator("render.render", text='one')
 
+        pie = layout.menu_pie()
         pie.operator("slots.projectpaint", text='Slots', icon='COLLAPSEMENU')
         pie.operator("view3d.brush_popup", text='Paint Brush', icon='BRUSH_DATA')
         pie.operator("artist_paint.popup", text='Canvas Control', icon='TEXTURE')
@@ -250,14 +252,14 @@ def register():
     for i in km_list:
         sm = bpy.context.window_manager
         km = sm.keyconfigs.default.keymaps[i]
-        kmi = km.keymap_items.new('wm.call_menu_pie', 'W', 'PRESS',)# alt=True)
+        kmi = km.keymap_items.new('wm.call_menu_pie', 'W', 'PRESS',)
         kmi.properties.name = "VIEW3D_PIE_artistpaint"
-        
-        
+
+
 
 def unregister():
     bpy.utils.unregister_module(__name__)
-    
+
     km_list = ['3D View']
     for i in km_list:
         sm = bpy.context.window_manager
