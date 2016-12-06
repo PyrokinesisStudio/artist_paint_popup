@@ -242,6 +242,7 @@ class VIEW3D_PIE_artistpaint(Menu):
         pie.operator("view3d.brush_popup", text='Paint Brush', icon='BRUSH_DATA')
         pie.operator("artist_paint.popup", text='Canvas Control', icon='TEXTURE')
         pie.operator("object.oper_nested", text='Drawtype', icon='CANCEL')
+        pie.operator("view3d.texture_popup", text='Tex Mapping', icon='TEXTURE')
 
 
 
